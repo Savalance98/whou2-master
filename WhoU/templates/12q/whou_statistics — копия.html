@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static "whou_statistics_css.css" %}">
+    <title>WHOU</title>
+</head>
+<body bgcolor="#E0FFFF">
+    <div id="block-body">
+     <header>
+       <div class="logo">
+        <a>
+          <span class="use">WHO</span><span class="web">U</span><span class="ru">.ru</span>
+        </a>
+       <p>ТЕПЕРЬ ЗНАКОМИТЬСЯ - ПРОСТО</p>
+       </div>
+
+       <div class="top-menu">
+         <ul>
+             <li><a href="{% url 'main' %}">Главная</a></li>
+             <li><a href="{% url 'profile' %}">Профиль</a></li>
+             <li><a href="{% url 'meetings' %}">Мои встречи</a></li>
+             <li><a href="{% url 'statistics' %}">Статистика</a></li>
+             <li><a href="{% url 'updates' %}">Обновления</a></li>
+             <li><a href="{% url 'signin' %}">Вход</a></li>
+             <li><a href="{% url 'signup' %}">Регистрация</a></li>
+         </ul>
+           <div class="d7">
+            <form>
+              <input type="text" placeholder="Искать здесь...">
+            </form>
+         </div>
+       </div>
+     </header>
+    </div>
+
+    <div class="canvas">
+        <svg class="chart" width="500" height="500" viewBox="0 0 50 50">
+        <circle class="unit" r="15.9" cx="50%" cy="50%"></circle>
+        <circle class="unit" r="15.9" cx="50%" cy="50%"></circle>
+        </svg>
+
+        <div class="legend">
+          <p class="title">С кем я встречался на этой неделе?</p>
+          <ul class="caption-list">
+            <li class="caption-item">мальчики</li>
+            <li class="caption-item">девочки</li>
+          </ul>
+        </div>
+    </div>
+
+    <div class="canvas1">
+        <svg class="chart1" width="500" height="500" viewBox="0 0 50 50">
+        <circle class="unit1" r="15.9" cx="50%" cy="50%"></circle>
+        <circle class="unit1" r="15.9" cx="50%" cy="50%"></circle>
+        <circle class="unit1" r="15.9" cx="50%" cy="50%"></circle>
+        <circle class="unit1" r="15.9" cx="50%" cy="50%"></circle>
+        </svg>
+
+        <div class="legend1">
+          <p class="title1">Из каких городов были эти люди?</p>
+          <ul class="caption-list1">
+            <li class="caption-item1">Москва</li>
+            <li class="caption-item1">Перербург</li>
+            <li class="caption-item1">Коломна</li>
+            <li class="caption-item1">Саратов</li>
+          </ul>
+        </div>
+    </div>
+
+</body>
+</html>

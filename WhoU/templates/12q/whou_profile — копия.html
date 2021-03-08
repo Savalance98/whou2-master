@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'whou_profile_css.css'%}">
+    <title>WHOU</title>
+</head>
+<body bgcolor="#E0FFFF">
+    <div class="container">
+
+     <header>
+       <div class="logo">
+        <a>
+          <span class="use">WHO</span><span class="web">U</span><span class="ru">.ru</span>
+        </a>
+       <p>ТЕПЕРЬ ЗНАКОМИТЬСЯ - ПРОСТО</p>
+       </div>
+
+       <div class="top-menu">
+         <ul>
+             <li><a href="{% url 'main' %}">Главная</a></li>
+             <li><a href="{% url 'profile' %}">Профиль</a></li>
+             <li><a href="{% url 'meetings' %}">Мои встречи</a></li>
+             <li><a href="{% url 'statistics' %}">Статистика</a></li>
+             <li><a href="{% url 'updates' %}">Обновления</a></li>
+             <li><a href="{% url 'signin' %}">Вход</a></li>
+             <li><a href="{% url 'signup' %}">Регистрация</a></li>
+         </ul>
+           <div class="find">
+            <form>
+              <input type="text" placeholder="Искать здесь...">
+            </form>
+         </div>
+       </div>
+     </header>
+
+    <div class="round"><img width="220px" height="220px" src="{% static 'Icon_kopia.png' %}"></div>
+    <div class="change-photo">изменить фото</div>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="d1 d">
+            <input type="text" placeholder="Имя:" name="name">
+        </div>
+        <div class="d2 d">
+            <input type="text" placeholder="Фамилия:" name="surname">
+        </div>
+        <div class="d3 d">
+            <input type="text" placeholder="Телефон:" name="tel">
+        </div>
+        <div class="d2 d">
+            <input type="text" placeholder="Возраст:" name="age">
+        </div>
+        <div class="d3 d">
+            <input type="text" placeholder="Город:" name="city">
+        </div>
+        <div class="d2 db"><p class="p">Пол:</p></div>
+        <div class="d3 d">
+            <input type="text" placeholder="Ссылка VK:" name="vk_url">
+        </div>
+        <div class="d2 d">
+            <input type="text" placeholder="Ссылка Inst:" name="instagram_url">
+        </div>
+
+        <input class="b" type="submit" value="Сохранить">
+
+        <div class="radio r1">
+            <input class="custom-radio" type="radio" id="m" name="color" value="green" name="sex-m">
+            <label for="m">М</label>
+          </div>
+        <div class="radio r2">
+            <input class="custom-radio" type="radio" id="g" name="color" value="green" name="sex-w">
+            <label for="g">Ж</label>
+          </div>
+    </form>
+    </div>
+</body>
+</html>
