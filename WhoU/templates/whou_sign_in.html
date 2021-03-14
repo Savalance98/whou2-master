@@ -37,13 +37,13 @@
     <a class="t">Вход в систему:</a>
     <div class="round"><img width="220px" height="220px" src="{% static 'Icon_kopia.png' %}"></div>
 
-    <form action="" method="post">
+    <form action="/signin/" method="post">
         {% csrf_token %}
     <div class="d1 d">
-              <input type="text" placeholder="Почта:" name="email">
+              <input type="text" placeholder="Почта:" name="email" value="{{email}}">
     </div>
     <div class="d2 d">
-              <input type="password" placeholder="Пароль:" name="password">
+              <input type="password" placeholder="Пароль:" name="password" value="{{password}}">
     </div>
 
         <input class="b" type="submit" value="SignIn"><a href="{% url 'main' %}">

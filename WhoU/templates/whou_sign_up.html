@@ -36,26 +36,23 @@
     </div>
     <a class="t">Регистрация:</a>
     <div class="round"><img width="220px" height="220px" src="{% static "Icon_kopia.png" %}"></div>
+
+    <form action="/signup/" method="post">
+        {% csrf_token %}
     <div class="d1 d">
-            <form>
-              <input type="text" placeholder="Имя:">
-            </form>
+              <input type="text" placeholder="Имя:" value="{{name}}" name="name">
     </div>
     <div class="d2 d">
-            <form>
-              <input type="text" placeholder="Пароль:">
-            </form>
+              <input type="text" placeholder="Пароль:" value="{{password}}" name="password">
     </div>
     <div class="d3 d">
-            <form>
-              <input type="text" placeholder="Телефон:">
-            </form>
+              <input type="text" placeholder="Телефон:" value="{{phone}}" name="phone">
     </div>
     <div class="d2 d">
-            <form>
-              <input type="text" placeholder="Почта:">
-            </form>
+              <input type="text" placeholder="Почта:" value="{{email}}" name="email">
          </div>
-    <button class="b"><a href="whou_registration.html">Сохранить</a></button>
+
+    <input class="b" type="submit" value="SignUp"><form href="{% url 'main' %}">
+    </form>
 </body>
 </html>
