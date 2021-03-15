@@ -2,16 +2,14 @@ from django.shortcuts import render, redirect
 from .forms import UserForm
 import pyrebase
 from requests.exceptions import HTTPError
+from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 global Info
 global Id
 
 
 def index_profile(request):
-    if request.method == "POST":
-        print(Info)
-        return render(request, "whou_profile.html")
-
+    print(cookies_demo(request))
     return render(request, "whou_profile.html")
 
 
@@ -33,7 +31,18 @@ def index_signin(request):
     print(context)
     if request.POST.get('email') is not None:
         context['email'] = request.POST.get('email')
-
+        request.session.set_test_cookie()
+        # if request.session.test_cookie_worked():
+        #     SESSION_COOKIE_NAME = 'test'
+        #     print(request.session)
+        # request.session.set_test_cookie()
+        # request.session['email'] = request.POST.get('email')
+        # if request.method == 'POST':
+        #     if request.session.test_cookie_worked():
+        #         request.session.delete_test_cookie()
+        #         return HttpResponse("You're logged in.")
+        #     else:
+        #         return HttpResponse("Please enable cookies and try again.")
     return render(request, "whou_sign_in.html", context)
 
 
@@ -84,7 +93,7 @@ def postsignin(request):
     auth = firebase.auth()
     try:
         user = auth.sign_in_with_email_and_password(email, passw)
-        # auth.send_email_verification(user['idToken'])
+        auth.send_email_verification(user['idToken'])
         # auth.send_password_reset_email(email)
         # print(auth.get_account_info(user['idToken']))
 
@@ -123,6 +132,15 @@ def postsignup(request):
     db = firebase.database()
     db.child('Users').child('qwerty').set(data)
     print('Работаеттттттттт')
+
+
+def cookies_demo(request):
+    response = render(request, 'whou_sign_in.html')
+    response.set_cookie('demo-cookies', '123456789')
+    print(1)
+    return response
+
+
 
 
 
