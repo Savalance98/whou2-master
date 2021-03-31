@@ -2,145 +2,110 @@ from django.shortcuts import render, redirect
 from .forms import UserForm
 import pyrebase
 from requests.exceptions import HTTPError
+from django.core.signing import Signer
+from datetime import timedelta
+from django.core.signing import TimestampSigner
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 global Info
 global Id
+from .testfunctions import *
+from .functions.getUser import *
+from .functions.postsignin import *
+from .functions.postsignup import *
+
 
 
 def index_profile(request):
-    print(cookies_demo(request))
-    return render(request, "whou_profile.html")
+    try:
+        userData = getUser(request)
+        print(userData)
+        context = {
+            'user': request.session.get('user_id'),
+            'data': userData
+        }
+        print(context)
+        # print( request.session['user_id'], context['data']['Uri_image'] )
+        if request.method == "POST":
+            postprofile(request, context)
+            return redirect('/profile/')
+        return render(request, "whou_profile.html", context)
+    except:
+        return redirect('/')
 
+def postprofile(request, context):
+    print(1)
+    data = {
+        'name': request.POST.get('name'),
+        'last_name': request.POST.get('last_name'),
+        'phone': request.POST.get('phone'),
+        'email': request.POST.get('email'),
+        'vk': request.POST.get('vk'),
+    }
+    # print(request.FILES.get('img'))
+    context['data'] = data
+    # context['img'] = f(data['vk'])
+    firebase = pyrebase.initialize_app(config)
+    db = firebase.database()
+    db.child('Users').child(context['user']).update(data)
+    # print(f(data['vk']))
+    # return render(request, "whou_profile.html", context)
 
 def index_stat(request):
-    userform = UserForm()
-    return render(request, "whou_statistics.html")
+    context = {
+        'user': request.session.get('user_id')
+    }
+    return render(request, "whou_statistics.html",context)
 
 
 def index_meetings(request):
-    userform = UserForm()
-    return render(request, "whou_meetings.html")
+    context = {
+        'user': request.session.get('user_id'),
+        'lis': getUser(request, 2)
+    }
+
+    return render(request, "whou_meetings.html", context)
 
 
 def index_signin(request):
-    userform = UserForm()
     if request.method == "POST":
         postsignin(request)
-    context = {}
-    print(context)
+
+    context = {
+        'user': request.session.get('user_id')
+    }
     if request.POST.get('email') is not None:
-        context['email'] = request.POST.get('email')
-        request.session.set_test_cookie()
-        # if request.session.test_cookie_worked():
-        #     SESSION_COOKIE_NAME = 'test'
-        #     print(request.session)
-        # request.session.set_test_cookie()
-        # request.session['email'] = request.POST.get('email')
-        # if request.method == 'POST':
-        #     if request.session.test_cookie_worked():
-        #         request.session.delete_test_cookie()
-        #         return HttpResponse("You're logged in.")
-        #     else:
-        #         return HttpResponse("Please enable cookies and try again.")
+        print(getUser(request))
+        return render(request, "whou_main.html", context)
     return render(request, "whou_sign_in.html", context)
+
 
 
 def index_signup(request):
     if request.method == "POST":
         postsignup(request)
-    context = {}
+    context = {
+        'user': request.session.get('user_id')
+    }
     if request.POST.get('email') is not None:
         context['email'] = request.POST.get('email')
+        context['password'] = request.POST.get('password')
+        return redirect('/signin/')
     return render(request, "whou_sign_up.html", context)
 
 
 def index_main(request):
-    # from pprint import pprint
-    # request.session['user_data'] = {}
-    # pprint(dict(request.session))
-    userform = UserForm()
-    return render(request, "whou_main.html")
+    context = {
+        'user': request.session.get( 'user_id' )
+    }
+
+    return render(request, "whou_main.html", context)
 
 
 def index_updates(request):
-    userform = UserForm()
-    return render(request, "whou_updates.html")
-
-# def SignIn(request):
-#     return redirect('signin/')
-
-
-def postsignin(request):
-    Info = None
-    Id = None
-    # print(request)
-    email = request.POST.get('email')
-    print(email)
-    passw = request.POST.get('password')
-    print(passw)
-    config = {
-        'apiKey': "AIzaSyBSxWNN_VKfsSTwCp3yjoe3x_W0RjNivdw",
-        'authDomain': "whou-d361d.firebaseapp.com",
-        'databaseURL': "https://whou-d361d.firebaseio.com",
-        'projectId': "whou-d361d",
-        'storageBucket': "whou-d361d.appspot.com",
-        'messagingSenderId': "994830820246",
-        'appId': "1:994830820246:web:94eecba0e57f35704673b7",
-        'measurementId': "G-SY3JH2ZEKQ"
+    context = {
+        'user': request.session.get('user_id')
     }
-    firebase = pyrebase.initialize_app(config)
-    auth = firebase.auth()
-    try:
-        user = auth.sign_in_with_email_and_password(email, passw)
-        auth.send_email_verification(user['idToken'])
-        # auth.send_password_reset_email(email)
-        # print(auth.get_account_info(user['idToken']))
-
-        Info = auth.get_account_info(user['idToken'])['users']
-        Id  = Info[0]['localId']
-        print(Id)
-        print(Info)
-
-        # print(user, type(user))
-        # print(db.child('Users').get('name'))
-    except HTTPError as error:
-        print(error)
-    print("Работает")
-
-def postsignup(request):
-    config = {
-        'apiKey': "AIzaSyBSxWNN_VKfsSTwCp3yjoe3x_W0RjNivdw",
-        'authDomain': "whou-d361d.firebaseapp.com",
-        'databaseURL': "https://whou-d361d.firebaseio.com",
-        'projectId': "whou-d361d",
-        'storageBucket': "whou-d361d.appspot.com",
-        'messagingSenderId': "994830820246",
-        'appId': "1:994830820246:web:94eecba0e57f35704673b7",
-        'measurementId': "G-SY3JH2ZEKQ"
-    }
-
-
-    data = {
-        'email': request.POST.get('email'),
-        'pass': request.POST.get('password'),
-        'name': request.POST.get('name'),
-        'phone': request.POST.get('phone'),
-    }
-
-    firebase = pyrebase.initialize_app(config)
-    db = firebase.database()
-    db.child('Users').child('qwerty').set(data)
-    print('Работаеттттттттт')
-
-
-def cookies_demo(request):
-    response = render(request, 'whou_sign_in.html')
-    response.set_cookie('demo-cookies', '123456789')
-    print(1)
-    return response
-
-
-
+    return render(request, "whou_updates.html", context)
 
 

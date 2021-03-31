@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+# from django.contrib.auth.models import User
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -48,9 +49,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
 ]
 
 ROOT_URLCONF = 'WhoU.urls'
+# AUTH_USER_MODEL = 'accounts.User'
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 
@@ -75,21 +78,18 @@ WSGI_APPLICATION = 'WhoU.wsgi.application'
 
 # CACHES = [
 #     {
-#         IMAGEFIT_CACHE_BACKEND_NAME: {
-#             'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#          "firebase": {
+#             "BACKEND": "django_firebase_cache.RealtimeDatabaseCache",
+#             "LOCATION": "Users",  # name of child key in Realtime Database
+#             "OPTIONS": {"databaseURL": "https://whou-d361d.firebaseio.com/"},
+#
 #     }
 #     }
 # ]
 SESSION_COOKIE_HTTPONLY = True
 
-#
-# SESSION_ENGINE = [
-#     {
-#         "django.contrib.sessions.backends.cache",
-#         "django.contrib.sessions.backends.file",
-#         "django.contrib.sessions.backends.signed_cookies",
-#     }
-# ]
+# #
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 
 # Database

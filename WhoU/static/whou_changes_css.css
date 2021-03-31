@@ -1,3 +1,7 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
 .d7:after {content:""; clear:both; display:table}
 
 .d7 input {
@@ -48,8 +52,8 @@
 }
 
 #block-body {
-    width: 98%;
-    margin: 15px auto;
+    width: 100%;
+    margin: 0;
     height: auto;
 }
 
@@ -66,7 +70,7 @@ header {
 }
 
 .logo {
-    width: 250px;
+    width: 270px;
     float: left;
     height: 80px;
 }
@@ -107,7 +111,6 @@ header {
     height: 80px;
     float: center;
 }
-
 .top-menu ul li {
     list-style: none;
     float: left;

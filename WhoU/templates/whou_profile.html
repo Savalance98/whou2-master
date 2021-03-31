@@ -1,85 +1,141 @@
-<!DOCTYPE html>
+{% extends "main.html" %}
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'w3/whou_profile_css.css'%}">
-    <title>WHOU</title>
-</head>
-<body bgcolor="#E0FFFF">
-    <div id="block-body">
-     <header>
-       <div class="logo">
-        <a>
-          <span class="use">WHO</span><span class="web">U</span><span class="ru">.ru</span>
-        </a>
-       <p>ТЕПЕРЬ ЗНАКОМИТЬСЯ - ПРОСТО</p>
-       </div>
+{% block cssfiles %}
+<link rel="stylesheet" href="{% static 'whou_profile_css.css' %}">
+{% endblock %}
 
-       <div class="top-menu">
-         <ul>
-             <li><a href="{% url 'main' %}">Главная</a></li>
-             <li><a href="{% url 'profile' %}">Профиль</a></li>
-             <li><a href="{% url 'meetings' %}">Мои встречи</a></li>
-             <li><a href="{% url 'statistics' %}">Статистика</a></li>
-             <li><a href="{% url 'updates' %}">Обновления</a></li>
-             <li><a href="{% url 'signin' %}">Вход</a></li>
-             <li><a href="{% url 'signup' %}">Регистрация</a></li>
-         </ul>
-           <div class="find">
-            <form>
-              <input type="text" placeholder="Искать здесь...">
-            </form>
-         </div>
-       </div>
-     </header>
+{% block content %}
+{% csrf_token %}
+<style>
+
+.box{
+    display: flex;
+    flex-direction: column;
+    margin:  386px auto;
+    text-align: center;
+    background-color: #000000;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    width: 300px;
+    color: #fff;
+    padding: 20px;
+}
+.box-title{
+    font-size: 2em;
+    border-bottom: 3px solid #2285f5;
+    margin-bottom: 30px;
+}
+.show{
+    padding: 10px;
+    margin: 10px;
+    background-color: #252e38;
+    color: #fff;
+    border: 0;
+    border-bottom: 2px solid #2484f2;
+    font-size: 1.3em;
+    text-decoration: none;
+}
+.show:hover{
+    color: #fff;
+    background-color: #2285f5;
+}
+.popup{
+    width:100%;
+    min-height:100%;
+    background-color: rgba(0,0,0,0.5);
+    overflow:hidden;
+    position:fixed;
+    top: 0%;
+}
+.popup .popup-content{
+    display: flex;
+    font-size: 1.4em;
+    flex-direction: column;
+    justify-content: center;
+    margin:500px auto 0px auto;
+    width:400px;
+    text-align: center;
+    height: 200px;
+    padding:0px;
+    background-color: #7eace7;
+    border-radius:5px;
+    box-shadow: 0px 0px 10px #000;
+}
+
+</style>
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <input accept=".jpg, .png, .gif" type="file" name="image" class="file__input">
+            <a href="javascript:PopUpHide()" class="show" >Hide</a>
+            <a href="javascript:PopUpHide()" class="show">vk</a>
+        </div>
     </div>
-    <div class="round"><img width="220px" height="220px" src="{% static 'ruka_tselnaya.png' %}"></div>
 
+    <form action="/profile/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+<!--    <label onclick="PopUpShow()" style="cursor: pointer">-->
+        <div class="round">
+            <img width="220px" height="220px" src="{{data.Uri_image}}">
+        </div>
+        <div class="buttons">
+             <input class="b" type="submit" value="req"><a href="{% url 'main' %}">
+        </div>
+<!--    </label>-->
     <div class="d1 d">
-            <form>
-              <input type="text" placeholder="Имя:">
-            </form>
+              <input type="text" placeholder="Имя:" value="{{data.name}}" name="name">
          </div>
     <div class="d2 d">
-            <form>
-              <input type="text" placeholder="Фамилия:">
-            </form>
+
+              <input type="text" placeholder="Фамилия:" value="{{data.last_name}}" name="last_name">
+
          </div>
     <div class="d3 d">
-            <form>
-              <input type="text" placeholder="Телефон:">
-            </form>
+
+              <input type="text" placeholder="Телефон:" value="{{data.phone}}" name="phone">
+
          </div>
     <div class="d2 d">
-            <form>
-              <input type="text" placeholder="Возраст:">
-            </form>
+
+              <input type="text" placeholder="Возраст:" value="{{data.email}}" name="email">
+
          </div>
     <div class="d3 d">
-            <form>
-              <input type="text" placeholder="Город:">
-            </form>
+
+              <input type="text" placeholder="Ссылка VK:" value="{{data.vk}}" name="vk">
          </div>
-    <div class="d2 db"><p class="p">Пол:</p></div>
-    <div class="d3 d">
-            <form>
-              <input type="text" placeholder="Ссылка VK:">
-            </form>
-         </div>
-    <div class="d2 d">
-            <form>
-              <input type="text" placeholder="Ссылка Inst:">
-            </form>
-         </div>
-    <button class="b"><a href="whou_changes.html">Сохранить</a></button>
-    <div class="radio r1">
-        <input class="custom-radio" type="radio" id="m" name="color" value="green">
-        <label for="m">М</label>
-      </div>
-    <div class="radio r2">
-        <input class="custom-radio" type="radio" id="g" name="color" value="green">
-        <label for="g">Ж</label>
-      </div>
-</body>
-</html>
+
+        <div class="buttons">
+            <input class="b" type="submit" value="Сохранить">
+        </div>
+
+
+         <div class="buttons">
+             <a href="/logout/">Выйти</a>
+        </div>
+
+
+
+        </form>
+<!--    <div class="radio r1">-->
+<!--        <input class="custo
+m-radio" type="radio" id="m" name="color" value="green">-->
+<!--        <label for="m">М</label>-->
+<!--      </div>-->
+<!--    <div class="radio r2">-->
+<!--        <input class="custom-radio" type="radio" id="g" name="color" value="green">-->
+<!--        <label for="g">Ж</label>-->
+<!--      </div>-->
+<script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        PopUpHide();
+    });
+    //Функция отображения PopUp
+    function PopUpShow(){
+        $("#popup").show();
+    }
+    //Функция скрытия PopUp
+    function PopUpHide(){
+        $("#popup").hide();
+    }
+</script>
+{% endblock %}
