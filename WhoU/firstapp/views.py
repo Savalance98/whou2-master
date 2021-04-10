@@ -13,43 +13,35 @@ from .testfunctions import *
 from .functions.getUser import *
 from .functions.postsignin import *
 from .functions.postsignup import *
+from .functions.postimg import *
+from .functions.postVK import *
+import time
 
 
 
 def index_profile(request):
-    try:
+    # try:
         userData = getUser(request)
-        print(userData)
         context = {
             'user': request.session.get('user_id'),
             'data': userData
         }
-        print(context)
-        # print( request.session['user_id'], context['data']['Uri_image'] )
         if request.method == "POST":
-            postprofile(request, context)
+            if request.POST.get('name') is not None:
+                postprofile(request, context)
+                if request.POST.get('isVk') == '1':
+                    postVK(context)
+            if request.FILES.get('image'):
+                t = time.time()*1000
+                file = request.FILES['image']
+                postimg(file,context)
+                print("\n\n\n\n ПОльзователь изминил фото \n\n\n\n")
             return redirect('/profile/')
-        return render(request, "whou_profile.html", context)
-    except:
-        return redirect('/')
 
-def postprofile(request, context):
-    print(1)
-    data = {
-        'name': request.POST.get('name'),
-        'last_name': request.POST.get('last_name'),
-        'phone': request.POST.get('phone'),
-        'email': request.POST.get('email'),
-        'vk': request.POST.get('vk'),
-    }
-    # print(request.FILES.get('img'))
-    context['data'] = data
-    # context['img'] = f(data['vk'])
-    firebase = pyrebase.initialize_app(config)
-    db = firebase.database()
-    db.child('Users').child(context['user']).update(data)
-    # print(f(data['vk']))
-    # return render(request, "whou_profile.html", context)
+        return render(request, "whou_profile.html", context)
+    # except:
+    #     return redirect('/')
+
 
 def index_stat(request):
     context = {
@@ -75,7 +67,6 @@ def index_signin(request):
         'user': request.session.get('user_id')
     }
     if request.POST.get('email') is not None:
-        print(getUser(request))
         return render(request, "whou_main.html", context)
     return render(request, "whou_sign_in.html", context)
 

@@ -37,7 +37,12 @@
 .show:hover{
     color: #fff;
     background-color: #2285f5;
+    cursor: pointer;
 }
+#changeAvatarInput {
+    display: none;
+}
+
 .popup{
     width:100%;
     min-height:100%;
@@ -60,26 +65,35 @@
     border-radius:5px;
     box-shadow: 0px 0px 10px #000;
 }
-
+.changeAvatarInput__submit {
+    display: none;
+}
+#changeAvatarInputForm {
+    display: flex;
+    flex-direction: column;
+}
 </style>
     <div class="popup" id="popup">
         <div class="popup-content">
-            <input accept=".jpg, .png, .gif" type="file" name="image" class="file__input">
-            <a href="javascript:PopUpHide()" class="show" >Hide</a>
-            <a href="javascript:PopUpHide()" class="show">vk</a>
+            <form method="post" id="changeAvatarInputForm" enctype="multipart/form-data">
+                <input type="hidden" name="change_avatar">
+                {% csrf_token %}
+                <input id="changeAvatarInput" accept=".jpg, .png, .gif" type="file" name="image" class="file__input">
+                <label for="changeAvatarInput" class="show">Hide</label>
+<!--                <input type="submit" class="changeAvatarInput__submit">-->
+            </form>
+            <a id="setVkPhoto" class="show">vk</a>
         </div>
     </div>
 
-    <form action="/profile/" method="post" enctype="multipart/form-data">
+    <form action="/profile/" method="post" id="profileDataForm">
     {% csrf_token %}
 <!--    <label onclick="PopUpShow()" style="cursor: pointer">-->
-        <div class="round">
-            <img width="220px" height="220px" src="{{data.Uri_image}}">
-        </div>
-        <div class="buttons">
-             <input class="b" type="submit" value="req"><a href="{% url 'main' %}">
+        <div class="round" >
+            <a href="javascript:PopUpShow()" class="show" style="margin:-10px"><img width="220px" height="220px" src="{{data.Uri_image}}"></a>
         </div>
 <!--    </label>-->
+        <input type="text" value="0" name="isVk" id="isVk" style="display:none">
     <div class="d1 d">
               <input type="text" placeholder="Имя:" value="{{data.name}}" name="name">
          </div>
@@ -111,19 +125,7 @@
          <div class="buttons">
              <a href="/logout/">Выйти</a>
         </div>
-
-
-
         </form>
-<!--    <div class="radio r1">-->
-<!--        <input class="custo
-m-radio" type="radio" id="m" name="color" value="green">-->
-<!--        <label for="m">М</label>-->
-<!--      </div>-->
-<!--    <div class="radio r2">-->
-<!--        <input class="custom-radio" type="radio" id="g" name="color" value="green">-->
-<!--        <label for="g">Ж</label>-->
-<!--      </div>-->
 <script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -132,10 +134,28 @@ m-radio" type="radio" id="m" name="color" value="green">-->
     //Функция отображения PopUp
     function PopUpShow(){
         $("#popup").show();
+
+
     }
     //Функция скрытия PopUp
     function PopUpHide(){
+<!--        document.getElementById('isVk').value = 1;-->
+
         $("#popup").hide();
+
     }
+
+    document.getElementById('setVkPhoto').addEventListener("mouseup",function(){
+        document.getElementById('isVk').value = 1;
+        $('#profileDataForm').submit();
+        document.getElementById('popup').style = "display: none;";
+    });
+
+    $('#changeAvatarInput').on('change', () => {
+        $('#changeAvatarInputForm').submit();
+
+    })
+
+
 </script>
 {% endblock %}

@@ -61,6 +61,7 @@ header {
    width: 100%;
    height: 80px;
    background-image: linear-gradient(to right, #0A797B 0%, #0FA3B1 51%, #10EAEE 100%);
+   margin-bottom: 24px;
 }
 
 #block-content {

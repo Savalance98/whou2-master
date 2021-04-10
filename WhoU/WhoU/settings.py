@@ -91,6 +91,8 @@ SESSION_COOKIE_HTTPONLY = True
 # #
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

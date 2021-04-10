@@ -1,3 +1,7 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
 .d7:after {content:""; clear:both; display:table}
 
 .d7 input {
@@ -63,23 +67,6 @@ header {
     width: 1035px;
     height: auto;
     min-height: 500px;
-}
-
-.logo {
-    width: 250px;
-    float: left;
-    height: 80px;
-}
-
-.logo a {
-    display: block;
-    margin-left: 60px;
-    margin-top: 10px;
-    font-family: "Exo2-Bold", sans-serif;
-    font-size: 28px;
-    color:  #b2aeb2;
-    text-decoration: none;
-    cursor: pointer;
 }
 
 .ru {
