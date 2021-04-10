@@ -15,6 +15,7 @@ from .functions.postsignin import *
 from .functions.postsignup import *
 from .functions.postimg import *
 from .functions.postVK import *
+from .functions.postprofile import *
 import time
 
 
