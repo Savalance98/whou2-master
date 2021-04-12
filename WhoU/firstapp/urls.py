@@ -11,6 +11,7 @@ urlpatterns = [
     path('signin/', index_signin, name='signin'),
     path('updates/', index_updates, name='updates'),
     path('signup/', index_signup, name='signup'),
+    path('check/', index_check, name='check'),
     path('signin/', postsignin),
     path('profile1/', postprofile),
     path('logout/', userLogout)

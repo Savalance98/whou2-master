@@ -51,14 +51,41 @@ def index_stat(request):
     return render(request, "whou_statistics.html",context)
 
 
+def send_mail(mail):
+    import smtplib
+    import random
+    number = random.randint( 100000, 999999 )
+    server = smtplib.SMTP( 'smtp.gmail.com', 587 )
+    server.ehlo()
+    server.starttls()
+    server.ehlo()
+
+    server.login( 'whoyouappp@gmail.com', 'Suslick228' )
+    subject = 'verification code'
+    body = 'verification code'
+    message = "Your code - " + str(number)
+
+    server.sendmail( 'whoyouappp@gmail.com', mail, message )
+    server.quit()
+    return number
+
 def index_meetings(request):
+    r = getUser(request, 2)
     context = {
         'user': request.session.get('user_id'),
-        'lis': getUser(request, 2)
     }
-
+    if r != context['user']:
+        context['lis'] = r
     return render(request, "whou_meetings.html", context)
 
+def index_check(request):
+    context = {
+        'user': request.session.get('user_id'),
+    }
+    if request.POST.get('check') is not None:
+        if int(request.POST.get('check')) == int(request.session.get('mailCode')):
+            return redirect('/signin/')
+    return render(request, 'whou_check.html', context)
 
 def index_signin(request):
     if request.method == "POST":
@@ -82,7 +109,8 @@ def index_signup(request):
     if request.POST.get('email') is not None:
         context['email'] = request.POST.get('email')
         context['password'] = request.POST.get('password')
-        return redirect('/signin/')
+        request.session['mailCode'] = send_mail(context['email'])
+        return redirect('/check/')
     return render(request, "whou_sign_up.html", context)
 
 

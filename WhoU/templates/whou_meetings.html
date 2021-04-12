@@ -16,6 +16,9 @@
          <td>Телефон</td>
          <td>VK</td>
      </tr>
+        {% if lis %}
+
+
         {% for data in lis %}
     <tr>
         <td><div class="round"><img src="{{data.Uri_image}}"></div></td>
@@ -26,6 +29,9 @@
         <td><a target="_blank" href="https://vk.com/{{data.vk}}">{{data.vk}}</a></td>
     </tr>
         {% endfor %}
+        {% else %}
+        <td><span>Нет встречь</span></td>
+        {% endif %}
     <!--<tr>
       <td>*</td>
       <td>*</td>

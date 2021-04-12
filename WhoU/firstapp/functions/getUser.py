@@ -26,7 +26,6 @@ def getUser(request, h = 0 ): # Получить данные пользоват
         if h != 0:
             hist = list(data['history2'].split('|'))
             hist.pop(0)
-            # print(vk.users.get(user_ids=hist[0], fields='photo_max'))
             for r in hist:
                 data2 = {}
                 for e in db.child('Users').child(r).get().each():
